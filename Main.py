@@ -1,10 +1,7 @@
-import sql
-import mqttSubscriber
+import dbConnect
+import ıotConnect
+import device
 
-sql.deviceStockExtraction()
-mqttSubscriber.connectMQTT()
-mqttSubscriber.topicDefinition()
+dev = device.device()
 
-
-while True:
-    mqttSubscriber.subscribe()
+dev.deviceStock()
