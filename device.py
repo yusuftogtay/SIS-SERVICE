@@ -1,19 +1,24 @@
-import dbConnect
+from dbConnect import Connect
 
-class device(object):
-    #Constructor
+
+def cleanDeviceID(devices):
+    cleandevices = list()
+    for i in devices:
+        for x in i:
+            cleandevices.append(str(x))
+    return cleandevices
+
+
+
+class Device(object):
+    # Constructor
     def __init__(self):
-        device.deviceStock(self)
+        self.db = Connect()
+
+    def getActivateHub(self):
+        return cleanDeviceID(devices=self.db.getActiveHubList())
+
+    def getActivateChildSensor(self,activehubs):
+        return cleanDeviceID(devices=self.db.getChildSensorList(ParentID=activehubs))
 
 
-    def cleanDeviceID(self, devices):
-        cleandevices = list()
-        for i in devices:
-            cleandevices.append(i[1,-2])
-        return cleandevices
-
-
-    def deviceStock(self):
-        db = dbConnect.connect()
-        devices = db.activeDevicelist()
-        device.cleanDeviceID(self,devices=devices)
