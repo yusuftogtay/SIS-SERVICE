@@ -21,11 +21,11 @@ class Device(object):
     def getActivateChildSensor(self,activehubs):
         return cleanDeviceID(devices=self.db.getChildSensorList(ParentID=activehubs))
 
-    def getdeviceMessageType(self,topic):
+    def getDeviceMessageType(self,topic):
         messageType = topic.split("/")
         return messageType.index(-1)
 
-    def getdeviceMessageID(self,topic):
+    def getDeviceMessageID(self,topic):
         deviceID = topic.split("/")
         if len(deviceID) == 2:
             return deviceID.index(-2)
