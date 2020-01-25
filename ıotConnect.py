@@ -1,6 +1,7 @@
 import paho.mqtt.client as mqtt
 import configure as conf
 from device import Device
+from jsonCoder import JsonDecode as decode
 
 
 class Iot:
@@ -35,7 +36,6 @@ class Iot:
         activeHubs = self.device.getActivateHub()
         for hub in activeHubs:
             activeChildSensor = self.device.getActivateChildSensor(activehubs=hub)
-            db = connect()
             for data in conf.getTopics():
                 topic = hub + "/" + data
                 self.deviceList.append(topic)
@@ -45,6 +45,16 @@ class Iot:
                     self.deviceList.append(topic)
         return self.deviceList
 
+    def on_message(self,client,userdata,msg, *args):
+        messageType = self.device.getdeviceMessageType(msg.topic)
+        deviceID = self.device.getdeviceMessageID(msg.topic)
+        messagePayload = msg.payload
+        parse = decode()
+        parseMessage = parse.messageDecode(
+            message=messagePayload,
+            messageType=messageType,
+            messageDeviceID=deviceID
+        )
 
 
 
@@ -53,9 +63,6 @@ class Iot:
         pass
 
     def on_connect(self):
-        pass
-
-    def on_message(self):
         pass
 
     def on_log(self):
