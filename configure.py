@@ -3,6 +3,7 @@ import json
 with open("package.json") as jsonFile:
     data = json.load(jsonFile)
 
+
 def getMqttHost():
     """
     :return: <list>
@@ -28,12 +29,12 @@ def getMqttUserName():
     return userName
 
 
-def getMqttPasswd():
+def getMqttPassword():
     """
         :return: <list>
     """
-    passwd = data["connect"]["mqtt"]["MQTT_PASSWORD"]
-    return passwd
+    password = data["connect"]["mqtt"]["MQTT_PASSWORD"]
+    return password
 
 
 def getMqttKeepAlive():
@@ -42,7 +43,7 @@ def getMqttKeepAlive():
     """
     keepalive = data["connect"]["mqtt"]["MQTT_KEEPALIVE"]
     keep = int(keepalive)
-    return  keep
+    return keep
 
 
 def getMysqlHost():
@@ -84,9 +85,10 @@ def getMysqlDb():
     keepalive = data["connect"]["mysql"]["MYSQL_DATABASE"]
     return keepalive
 
+
 def getTopics():
     top1 = data["topics"]["data"]
     top2 = data["topics"]["status"]
     top3 = data["topics"]["info"]
-    topics = (top1,top2,top3)
+    topics = (top1, top2, top3)
     return topics
