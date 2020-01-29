@@ -1,6 +1,7 @@
 import mysql.connector
 import configure as conf
 
+
 class Connect(object):
 
     def __init__(self):
@@ -22,60 +23,96 @@ class Connect(object):
             print("Connected Port: " + conf.getMysqlPort())
             print("Connected Database: " + conf.getMysqlDb())
         else:
-            self.db.ping(reconnect= True, attempts=1,delay=5)
+            self.db.ping(reconnect=True, attempts=1, delay=5)
+        self.queryHubData = "INSERT INTO HUB_DATA VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        self.queryHubInfo = "INSERT INTO HUB_INFO VALUES (%s, %s, %s, %s, %s)"
+        self.queryHubStatus = "INSERT INTO HUB_STATUS VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        self.querySensStatus = "INSERT INTO HUB_INFO VALUES (%s, %s, %s, %s, %s)"
+        self.querySoilMoistureSensorData = "INSERT INTO SOIL_MOISTURE_DATA VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        self.queryWeatherStationData = "INSERT INTO WEATHER_STATION_DATA VALUES (%s, %s, %s, %s, %s, %s)"
+        self.queryChildSensorId = "SELECT CHILDSENSOR_ID FROM deviceparent WHERE DEVICE_ID ="
+        self.queryActiveHubList = "SELECT DEVICE_ID FROM DEVICE_STOCK WHERE DEVICE_TYPE = 'HUB'"
+        self.queryDeviceType = "SELECT * FROM DEVICE_STOCK"
 
     def getActiveHubList(self):
         """
+        * Returns the list of actively working hub devices.
+
         :return: <list>
         """
-        self.cursor = self.db.cursor()
-        self.cursor.execute("SELECT DEVICE_ID FROM DEVICE_STOCK WHERE DEVICE_TYPE = 'HUB'")
-        result = self.cursor.fetchall()
+        cursor = self.db.cursor()
+        cursor.execute(self.queryActiveHubList)
+        result = cursor.fetchall()
         return result
 
     def getDeviceType(self):
         """
-        :return:
+        *Returns the IDs and device types of active devices from the database.
+
+        :return: list
         """
-        self.cursor = self.db.cursor()
-        self.cursor.execute("SELECT * FROM DEVICE_STOCK")
-        result = self.cursor.fetchall()
+        cursor = self.db.cursor()
+        cursor.execute(self.queryDeviceType)
+        result = cursor.fetchall()
         return result
 
     def getChildSensorList(self, **kwargs):
         """
-        :return: <list>
+        * Returns the list of child sensors connected to the Hub device whose id is given as a parameter.
+
+        :param kwargs: int parentId
+        :return: list
         """
         parentID = kwargs.get("ParentID", None)
-        self.cursor = self.db.cursor()
-        sql = "SELECT CHILDSENSOR_ID FROM deviceparent WHERE DEVICE_ID =" + parentID
-        self.cursor.execute(sql)
-        result = self.cursor.fetchall()
+        cursor = self.db.cursor()
+        cursor.execute(self.queryChildSensorId + parentID)
+        result = cursor.fetchall()
+        cursor.close()
         return result
 
     # noinspection PyGlobalUndefined
-    def insertIotMessage(self, deviceid, messagetype, values):
+    def insertIotMessage(self, deviceId, messageType, values):
+        """
+        *Messages from iot network are transferred to sql database with this method
+        **Device type is learned by querying the incoming device id in the SQL database.
+        ***Messages are filtered and added to the database according to the topics that device types will publish messages.
+
+        :param values: Tuple
+        :param deviceId: Int
+        :param messageType: String
+        """
         cursor = self.db.cursor()
         deviceTypeList = self.getDeviceType()
         global deviceType
+        global query
         for devices in deviceTypeList:
-            if devices[0] == deviceid:
+            if devices[0] == deviceId:
                 deviceType = devices[1]
-        if deviceType == "HUB":
-            if messagetype == "Data":
-                pass
-            if messagetype == "Info":
-                pass
-            if messagetype == "Status":
-                pass
-        if messagetype == "Status":
-            if deviceType == "SM":
-                pass
-            elif deviceType == "WS":
-                pass
-        elif messagetype == "Data":
-            if deviceType == "SM":
-                pass
-            elif deviceType == "WS":
-                pass
 
+        if deviceType == 'HUB':
+            if messageType == 'Data':
+                query = self.queryHubData
+
+            elif messageType == 'Info':
+                query = self.queryHubInfo
+
+            elif messageType == 'Status':
+                query = self.queryHubStatus
+
+        elif deviceType == 'WS':
+            if messageType == 'Status':
+                query = self.querySensStatus
+
+            elif messageType == 'Data':
+                query = self.queryWeatherStationData
+
+        elif deviceType == "SM":
+            if messageType == 'Status':
+                query = self.querySensStatus
+
+            elif messageType == 'Data':
+                query = self.queryWeatherStationData
+        cursor.execute(query, values)
+        lastRowId = cursor.lastrowid()
+        print('Inserted: ' + lastRowId)
+        cursor.close()
