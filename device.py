@@ -2,12 +2,17 @@ from dbConnect import Connect
 
 
 def cleanDeviceID(devices):
-    cleandevices = list()
+    """
+    This function makes the data from the sql query operable.
+
+    :param devices: <list>
+    :return:
+    """
+    cleanDevices = list()
     for i in devices:
         for x in i:
-            cleandevices.append(str(x))
-    return cleandevices
-
+            cleanDevices.append(str(x))
+    return cleanDevices
 
 
 class Device(object):
@@ -16,18 +21,43 @@ class Device(object):
         self.db = Connect()
 
     def getActivateHub(self):
+        """
+        Returns the list of hub devices enabled with CRM.
+
+        :return cleanDeviceID(db.getActiveHubList):
+        """
         return cleanDeviceID(devices=self.db.getActiveHubList())
 
-    def getActivateChildSensor(self,activehubs):
-        return cleanDeviceID(devices=self.db.getChildSensorList(ParentID=activehubs))
+    def getActivateChildSensor(self, activeHubs):
+        """
+        List child sensors connected to active hub devices.
 
-    def getDeviceMessageType(self,topic):
+        :param activeHubs:
+        :return cleanDeviceID(db.getActiveChildSensorList):
+        """
+        return cleanDeviceID(devices=self.db.getChildSensorList(ParentID=activeHubs))
+
+    @staticmethod
+    def getDeviceMessageType(topic):
+        """
+        Returns topics posted by the device.
+
+        :param topic:
+        :return:
+        """
         messageType = topic.split("/")
-        return messageType.index(-1)
+        return messageType[-1]
 
-    def getDeviceMessageID(self,topic):
+    @staticmethod
+    def getDeviceMessageID(topic):
+        """
+        Returns the ID of the devices that published messages.
+
+        :param topic:
+        :return:
+        """
         deviceID = topic.split("/")
         if len(deviceID) == 2:
-            return deviceID.index(-2)
+            return deviceID[0]
         elif len(deviceID) == 3:
-            return deviceID.index(1)
+            return deviceID[1]
