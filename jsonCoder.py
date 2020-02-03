@@ -11,6 +11,13 @@ class JsonDecode(object):
 
     # noinspection PyGlobalUndefined
     def messageDecode(self, message, messageType, messageDeviceID):
+        """
+
+        :param message:
+        :param messageType:
+        :param messageDeviceID:
+        :return:
+        """
         message = json.loads(message)
         jsonType = messageType
         jsonID = messageDeviceID
@@ -19,6 +26,7 @@ class JsonDecode(object):
         for devices in deviceTypeList:
             if devices[0] == jsonID:
                 deviceType = devices[1]
+
         if deviceType == "HUB":
             if jsonType == "Info":
                 sens1 = message["sens1"]
@@ -107,6 +115,7 @@ class JsonDecode(object):
                     dateTime
                 )
                 return values
+
             elif jsonType == "Data":
                 soilMoisture30 = message["S3"]
                 soilMoisture60 = message["S6"]
@@ -137,6 +146,7 @@ class JsonDecode(object):
                 dateTime = date + " " + time
                 sql = (messageDeviceID, batteryLevel, rfQuality, error, dateTime)
                 return sql
+
             elif jsonType == "Data":
                 airQuality = message["AQ"]
                 airTemperature = message["AT"]
