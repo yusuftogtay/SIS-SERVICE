@@ -75,7 +75,8 @@ class Connect(object):
         """
         *Messages from iot network are transferred to sql database with this method
         **Device type is learned by querying the incoming device id in the SQL database.
-        ***Messages are filtered and added to the database according to the topics that device types will publish messages.
+        ***Messages are filtered and added to the database according to the topics
+        that device types will publish messages.
 
         :param values: Tuple
         :param deviceId: Int
