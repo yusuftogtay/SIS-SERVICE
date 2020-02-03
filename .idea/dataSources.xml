@@ -14,5 +14,12 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://45.158.14.218:3306/sis</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="MYSQL-@server [2]" uuid="9561b385-08ed-40f5-bbe2-fb1f8ab79f18">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <remarks>Sunucudaki veritabanı</remarks>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://45.158.14.218:3306/sis</jdbc-url>
+    </data-source>
   </component>
 </project>
