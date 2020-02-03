@@ -1,7 +1,11 @@
-import dbConnect
-import ıotConnect
-import device
+from ıotConnect import Iot
+from device import Device
+from threading import Thread as th
 
-dev = device.device()
 
-dev.deviceStock()
+if __name__ == '__main__':
+    mqtt = Iot()
+    mqtt.setSubscribe()
+    mqtt.loop()
+
+
