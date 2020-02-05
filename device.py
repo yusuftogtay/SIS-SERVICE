@@ -24,7 +24,7 @@ class Device(object):
         """
         Returns the list of hub devices enabled with CRM.
 
-        :return cleanDeviceID(db.getActiveHubList):
+            :return: cleanDeviceID(db.getActiveHubList)
         """
         return cleanDeviceID(devices=self.db.getActiveHubList())
 

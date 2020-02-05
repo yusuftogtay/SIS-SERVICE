@@ -1,21 +1,11 @@
 import paho.mqtt.client as mqtt
-import configure as conf
+from configure import Configure as conf
+from configure import Colors
 from device import Device
 from jsonCoder import JsonDecode as deCoder
 from dbConnect import Connect
 
-
-class Colors:
-    header = '\033[95m'
-    okBlue = '\033[94m'
-    okGreen = '\033[92m'
-    warning = '\033[93m'
-    fail = '\033[91m'
-    enDc = '\033[0m'
-    bold = '\033[1m'
-    underline = '\033[4m'
-
-
+#sulama yok
 class Iot:
     def __init__(self):
         self.host = conf.getMqttHost()
