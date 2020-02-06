@@ -164,3 +164,25 @@ class JsonDecode(object):
                     dateTime
                 )
                 return values
+
+
+class JsonEncode(object):
+    activeJson = json.dumps({"activate": 1})
+    deActiveJson = json.dumps({"activate": 0})
+    relayStartJson = json.dumps({"relay": 1})
+    relayStopJson = json.dumps({"relay": 0})
+
+    @staticmethod
+    def irrigationStart(startTime='', stopTime=''):
+        """
+        This method enables the irrigation system to be started as planned.
+
+        :param startTime: Start time of irrigation. format(HH-MM-SS)
+        :param stopTime: Stop time of irrigation. format(HH-MM-SS)
+        :return: Planned irrigation message (in JSON format)
+        """
+        irrigationStart = {
+            "start": startTime,
+            "stop": stopTime
+        }
+        return json.dumps(irrigationStart)
