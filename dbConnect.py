@@ -5,11 +5,11 @@ from configure import Configure
 class Connect(object):
 
     def __init__(self):
-        self.mysqlHost = Configure.getMysqlHost()
-        self.mysqlPort = Configure.getMysqlPort()
-        self.mysqlUsername = Configure.getMysqlUserName()
-        self.mysqlPassword = Configure.getMysqlPassword()
-        self.mysqlDb = Configure.getMysqlDb()
+        self.mysqlHost = Configure.getMysqlHost
+        self.mysqlPort = Configure.getMysqlPort
+        self.mysqlUsername = Configure.getMysqlUserName
+        self.mysqlPassword = Configure.getMysqlPassword
+        self.mysqlDb = Configure.getMysqlDb
         self.db = mysql.connector.connect(
             host=self.mysqlHost,
             user=self.mysqlUsername,
@@ -19,9 +19,9 @@ class Connect(object):
         )
         if self.db.is_connected():
             print("Connection successful")
-            print("Connected server:" + Configure.getMysqlHost())
-            print("Connected Port: " + Configure.getMysqlPort())
-            print("Connected Database: " + Configure.getMysqlDb())
+            print("Connected server:" + Configure.getMysqlHost)
+            print("Connected Port: " + Configure.getMysqlPort)
+            print("Connected Database: " + Configure.getMysqlDb)
         else:
             self.db.ping(reconnect=True, attempts=1, delay=5)
         self.queryHubData = "INSERT INTO HUB_DATA VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"

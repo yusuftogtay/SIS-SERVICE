@@ -24,5 +24,6 @@ class Configure:
     getMysqlHost = data["connect"]["mysql"]["MYSQL_HOST"]
     getMysqlUserName = data["connect"]["mysql"]["MYSQL_USERNAME"]
     getMysqlPassword = data["connect"]["mysql"]["MYSQL_PASSWORD"]
+    getMysqlPort = data["connect"]["mysql"]["MYSQL_PORT"]
     getMysqlDb = data["connect"]["mysql"]["MYSQL_DATABASE"]
     getTopics = (data["topics"]["data"], data["topics"]["status"], data["topics"]["info"])
