@@ -1,16 +1,16 @@
 import paho.mqtt.client as mqtt
-from configure import Configure as conf
+from configure import Configure
 from configure import Colors
 from device import Device
 from jsonCoder import JsonDecode as deCoder
 from dbConnect import Connect
 
-#sulama yok
+
 class Iot:
     def __init__(self):
-        self.host = conf.getMqttHost()
-        self.port = conf.getMqttPort()
-        self.keepalive = conf.getMqttKeepAlive()
+        self.host = Configure.getMqttHost()
+        self.port = Configure.getMqttPort()
+        self.keepalive = Configure.getMqttKeepAlive()
         self.mqttClient = mqtt.Client("SIS_ADMIN")
         self.mqttClient.connect(host=self.host, port=self.port, keepalive=self.keepalive)
         self.mqttClient.on_message = self.on_message
@@ -41,11 +41,11 @@ class Iot:
         activeHubs = self.device.getActivateHub()
         for hub in activeHubs:
             activeChildSensor = self.device.getActivateChildSensor(activeHubs=hub)
-            for data in conf.getTopics():
+            for data in Configure.getTopics():
                 topic = hub + "/" + data
                 self.deviceList.append(topic)
             for child in activeChildSensor:
-                for data in conf.getTopics():
+                for data in Configure.getTopics():
                     topic = hub + "/" + child + "/" + data
                     self.deviceList.append(topic)
         return self.deviceList
@@ -71,6 +71,7 @@ class Iot:
             messageDeviceID=deviceID
         )
         self.connect.insertIotMessage(deviceId=deviceID, messageType=messageType, values=parseMessage)
+        print("mesaj geldi " + str(client) + " " + str(userdata))
 
     def messageCallBackAdd(self, sub, callback):
         """
@@ -127,13 +128,13 @@ class Iot:
         :return:
         """
         if rc == 0:
-            print(f"{Colors.okGreen} {client} {userdata} MQTT Connection successful... {Colors.enDc}")
-            print(f"{Colors.okGreen}Connection Host: {Colors.enDc}" + conf.getMqttHost())
+            print(f"{Colors.okGreen} {client} {userdata} {flags} MQTT Connection successful... {Colors.enDc}")
+            print(f'{Colors.okGreen}Connection Host: {Colors.enDc}' + Configure.getMqttHost())
         elif rc == 1:
-            print(f"{Colors.fail}Connection refused - incorrect protocol version. {Colors.enDc}")
+            print(f'{Colors.fail}Connection refused - incorrect protocol version. {Colors.enDc}')
             print(client + " " + userdata)
         elif rc == 2:
-            print(f"{Colors.fail}Connection refused - invalid client identifier {Colors.enDc}")
+            print(f'{Colors.fail}Connection refused - invalid client identifier {Colors.enDc}')
             print(client + " " + userdata)
         elif rc == 3:
             print(f"{Colors.fail}Connection refused - server unavailable {Colors.enDc}")
@@ -163,6 +164,7 @@ class Iot:
         """
         if rc != 0:
             print("Unexpected disconnection.")
+            print(str(client) + " " + str(userdata))
             
     @staticmethod
     def on_log(client, level, buf):
@@ -191,7 +193,8 @@ class Iot:
         elif level == "MQTT_LOG_DEBUG":
             print(f"{Colors.header} {client} INFO : {buf}{Colors.enDc}")
 
-    def on_publish(self, client, userdata, mid):
+    @staticmethod
+    def on_publish(client, userdata, mid):
         """
         Called when a message that was to be sent using the publish() call has completed transmission to the broker.
         For messages with QoS levels 1 and 2, this means that the appropriate handshakes have completed.
@@ -208,15 +211,19 @@ class Iot:
         to allow outgoing messages to be tracked.
         :return:
         """
-        pass
+        print("Publish: " + str(client) + " " + str(userdata) + " " + str(mid))
 
-    def on_unsubscribe(self, userdata, mid):
+    @staticmethod
+    def on_unsubscribe(client, userdata, mid):
         """
         Called when the broker responds to an unsubscribe request. The mid variable matches the mid variable returned
         from the corresponding unsubscribe() call.
 
+        :param client:
         :param userdata:
         :param mid:
         :return:
         """
-        pass
+        print("Client: " + client)
+        print("Userdata: " + userdata)
+        print("Mid: " + mid)
