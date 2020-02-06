@@ -16,92 +16,13 @@ class Colors:
 
 
 class Configure:
-    @staticmethod
-    def getMqttHost():
-        """
-        :return: <list>
-        """
-        host = data["connect"]["mqtt"]["MQTT_HOST"]
-        return host
-
-    @staticmethod
-    def getMqttPort():
-        """
-            :return: <list>
-        """
-        port = data["connect"]["mqtt"]["MQTT_PORT"]
-        port = int(port)
-        return port
-
-    @staticmethod
-    def getMqttUserName():
-        """
-            :return: <list>
-        """
-        userName = data["connect"]["mqtt"]["MQTT_USERNAME"]
-        return userName
-
-    @staticmethod
-    def getMqttPassword():
-        """
-            :return: <list>
-        """
-        password = data["connect"]["mqtt"]["MQTT_PASSWORD"]
-        return password
-
-    @staticmethod
-    def getMqttKeepAlive():
-        """
-            :return: <list>
-        """
-        keepalive = data["connect"]["mqtt"]["MQTT_KEEPALIVE"]
-        keep = int(keepalive)
-        return keep
-
-    @staticmethod
-    def getMysqlHost():
-        """
-            :return: <list>
-        """
-        host = data["connect"]["mysql"]["MYSQL_HOST"]
-        return host
-
-    @staticmethod
-    def getMysqlPort():
-        """
-            :return: <list>
-        """
-        port = data["connect"]["mysql"]["MYSQL_PORT"]
-        return port
-
-    @staticmethod
-    def getMysqlUserName():
-        """
-            :return: <list>
-        """
-        userName = data["connect"]["mysql"]["MYSQL_USERNAME"]
-        return userName
-
-    @staticmethod
-    def getMysqlPassword():
-        """
-            :return: <list>
-        """
-        password = data["connect"]["mysql"]["MYSQL_PASSWORD"]
-        return password
-
-    @staticmethod
-    def getMysqlDb():
-        """
-            :return: <list>
-        """
-        keepalive = data["connect"]["mysql"]["MYSQL_DATABASE"]
-        return keepalive
-
-    @staticmethod
-    def getTopics():
-        top1 = data["topics"]["data"]
-        top2 = data["topics"]["status"]
-        top3 = data["topics"]["info"]
-        topics = (top1, top2, top3)
-        return topics
+    getMqttHost = data["connect"]["mqtt"]["MQTT_HOST"]
+    getMqttPort = data["connect"]["mqtt"]["MQTT_PORT"]
+    getMqttUserName = data["connect"]["mqtt"]["MQTT_USERNAME"]
+    getMqttPassword = data["connect"]["mqtt"]["MQTT_PASSWORD"]
+    getMqttKeepAlive = data["connect"]["mqtt"]["MQTT_KEEPALIVE"]
+    getMysqlHost = data["connect"]["mysql"]["MYSQL_HOST"]
+    getMysqlUserName = data["connect"]["mysql"]["MYSQL_USERNAME"]
+    getMysqlPassword = data["connect"]["mysql"]["MYSQL_PASSWORD"]
+    getMysqlDb = data["connect"]["mysql"]["MYSQL_DATABASE"]
+    getTopics = (data["topics"]["data"], data["topics"]["status"], data["topics"]["info"])
