@@ -37,6 +37,17 @@ class Iot:
             self.rc = self.mqttClient.loop()
         print("RC: " + str(self.rc))
 
+    def publishMessage(self, message='', topic='', qos=0):
+        """
+        It enables sending messages in Json format with MQTT protocol.
+
+        :param message: Payload (In the Json format)
+        :param topic: Subject to the message
+        :param qos: Quality of Service 0,1 or 2
+        """
+        self.mqttClient.publish(topic=topic, payload=message, qos=qos, retain=False)
+        pass
+
     def setTopic(self):
         activeHubs = self.device.getActivateHub()
         for hub in activeHubs:
