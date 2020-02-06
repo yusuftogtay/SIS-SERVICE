@@ -4,20 +4,27 @@
   "dependencies": {
 
   },
-  "mqtt": {
-    "MQTT_HOST": "185.207.37.66",
+  "connect": {
+    "mqtt": {
+    "MQTT_HOST": "45.158.14.218",
     "MQTT_PORT": 1883,
     "MQTT_USERNAME": "",
     "MQTT_PASSWORD": "",
     "MQTT_KEEPALIVE": 60
   },
   "mysql": {
-    "MYSQL_HOST":"185.207.37.66",
+    "MYSQL_HOST":"45.158.14.218",
     "MYSQL_USERNAME": "joseph",
     "MYSQL_PASSWORD": "Joseph_99",
     "MYSQL_PORT": "3306",
     "DATABASE": "sis"
   }
+  },
+   "topics": {
+      "data": "Data",
+      "status": "Status",
+      "info": "Info"
+    }
 }
 
 
