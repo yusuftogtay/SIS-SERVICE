@@ -83,6 +83,7 @@ class Iot:
         )
         self.connect.insertIotMessage(deviceId=deviceID, messageType=messageType, values=parseMessage)
         print("mesaj geldi " + str(client) + " " + str(userdata))
+        print(str(msg.payload))
 
     def messageCallBackAdd(self, sub, callback):
         """
