@@ -8,9 +8,9 @@ from dbConnect import Connect
 
 class Iot:
     def __init__(self):
-        self.host = Configure.getMqttHost()
-        self.port = Configure.getMqttPort()
-        self.keepalive = Configure.getMqttKeepAlive()
+        self.host = Configure.getMqttHost
+        self.port = Configure.getMqttPort
+        self.keepalive = Configure.getMqttKeepAlive
         self.mqttClient = mqtt.Client("SIS_ADMIN")
         self.mqttClient.connect(host=self.host, port=self.port, keepalive=self.keepalive)
         self.mqttClient.on_message = self.on_message
@@ -52,11 +52,11 @@ class Iot:
         activeHubs = self.device.getActivateHub()
         for hub in activeHubs:
             activeChildSensor = self.device.getActivateChildSensor(activeHubs=hub)
-            for data in Configure.getTopics():
+            for data in Configure.getTopics:
                 topic = hub + "/" + data
                 self.deviceList.append(topic)
             for child in activeChildSensor:
-                for data in Configure.getTopics():
+                for data in Configure.getTopics:
                     topic = hub + "/" + child + "/" + data
                     self.deviceList.append(topic)
         return self.deviceList
